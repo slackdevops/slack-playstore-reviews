@@ -8,6 +8,7 @@ const locale = process.env.LOCALE || 'ja'
 
 !async function() {
   const playStore = new PlayStore({ appId, locale })
+  await playStore.fetch()
 }()
 
 // vim: se et ts=2 sw=2 sts=2 ft=javascript :

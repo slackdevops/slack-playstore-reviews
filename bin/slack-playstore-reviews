@@ -1,0 +1,13 @@
+#!/usr/bin/env node
+'use strict'
+
+const PlayStore = require('../lib/play_store')
+
+const appId = process.env.APP_ID
+const locale = process.env.LOCALE || 'ja'
+
+!async function() {
+  const playStore = new PlayStore({ appId, locale })
+}()
+
+// vim: se et ts=2 sw=2 sts=2 ft=javascript :

@@ -1,0 +1,13 @@
+{
+  "name": "slack-playstore-reviews",
+  "version": "1.0.0",
+  "main": "index.js",
+  "bin": "./bin/slack-playstore-reviews",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "cheerio": "^0.22.0",
+    "fancy-log": "^1.3.0",
+    "got": "^6.7.1"
+  }
+}

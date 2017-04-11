@@ -51,6 +51,7 @@ const defaultAfterAt = process.env.AFTER_AT || '1970-01-01'
     log(`Posting ${filteredReviews.length} reviews`)
     await slack.post(filteredReviews)
 
+    await history.setAfterDate(beforeDate)
     log('Successful')
   } finally {
     history.quit()

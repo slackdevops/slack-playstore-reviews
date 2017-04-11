@@ -1,14 +1,50 @@
 #!/usr/bin/env node
 'use strict'
 
+const History = require('../lib/history')
 const PlayStore = require('../lib/play_store')
+const Slack = require('../lib/slack')
+
+// ----------------------------------------------------------------------------
 
 const appId = process.env.APP_ID
 const locale = process.env.LOCALE || 'ja'
 
+const token = process.env.SLACK_API_TOKEN
+const channel = process.env.SLACK_CHANNEL
+const botUser = {
+  username: process.env.SLACK_USERNAME,
+  iconUrl: process.env.SLACK_ICON_URL,
+}
+
+const port = process.env.REDIS_PORT || 6379
+const host = process.env.REDIS_HOST || '127.0.0.1'
+const db = process.env.REDIS_DB || 0
+const prefix = process.env.REDIS_PREFIX || null
+
+const defaultAfterAt = process.env.AFTER_AT || '1970-01-01'
+
+// ----------------------------------------------------------------------------
+
 !async function() {
   const playStore = new PlayStore({ appId, locale })
-  await playStore.fetch()
+  const slack = new Slack({ token, channel, botUser })
+  const history = new History({ port, host, db, prefix })
+
+  try {
+    const afterDate = await history.getAfterDate(defaultAfterAt)
+    const beforeDate = new Date()
+    console.log(afterDate)
+    console.log(beforeDate)
+
+    // afterDate <= x < beforeDate
+    const reviews = await playStore.fetch()
+    const filteredReviews = reviews.filter(
+      review => afterDate <= review.date && review.date < beforeDate)
+    console.log(filteredReviews)
+  } finally {
+    history.quit()
+  }
 }()
 
 // vim: se et ts=2 sw=2 sts=2 ft=javascript :

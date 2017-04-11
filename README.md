@@ -12,6 +12,8 @@ slack-playstore-reviews
 
 ## Getting Started
 
+I recommend to execute by crontab every morning.
+
 ```
 $ git clone https://github.com/pine/slack-playstore-reviews.git
 $ cd slack-playstore-reviews
@@ -20,6 +22,7 @@ $ SLACK_API_TOKEN=XXX bin/slack-playstore-reviews
 ```
 
 ## Options
+
 You can set any options uses environment variables.
 
 - `APP_ID` Google Play Application ID **(required)**

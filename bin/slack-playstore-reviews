@@ -1,6 +1,9 @@
 #!/usr/bin/env node
 'use strict'
 
+const log = require('fancy-log')
+const fecha = require('fecha')
+
 const History = require('../lib/history')
 const PlayStore = require('../lib/play_store')
 const Slack = require('../lib/slack')
@@ -8,13 +11,12 @@ const Slack = require('../lib/slack')
 // ----------------------------------------------------------------------------
 
 const appId = process.env.APP_ID
-const locale = process.env.LOCALE || 'ja'
 
 const token = process.env.SLACK_API_TOKEN
 const channel = process.env.SLACK_CHANNEL
 const botUser = {
   username: process.env.SLACK_USERNAME,
-  iconUrl: process.env.SLACK_ICON_URL,
+  icon_url: process.env.SLACK_ICON_URL,
 }
 
 const port = process.env.REDIS_PORT || 6379
@@ -27,21 +29,29 @@ const defaultAfterAt = process.env.AFTER_AT || '1970-01-01'
 // ----------------------------------------------------------------------------
 
 !async function() {
-  const playStore = new PlayStore({ appId, locale })
+  const playStore = new PlayStore({ appId })
   const slack = new Slack({ token, channel, botUser })
   const history = new History({ port, host, db, prefix })
 
   try {
     const afterDate = await history.getAfterDate(defaultAfterAt)
     const beforeDate = new Date()
-    console.log(afterDate)
-    console.log(beforeDate)
 
-    // afterDate <= x < beforeDate
+    // find reviews
+    log(`Finding reviews from ${fecha.format(afterDate, 'YYYY/MM/DD')} ` +
+        `to ${fecha.format(beforeDate, 'YYYY/MM/DD')}`)
     const reviews = await playStore.fetch()
+
+    // filter reviews: afterDate <= x < beforeDate
     const filteredReviews = reviews.filter(
       review => afterDate <= review.date && review.date < beforeDate)
-    console.log(filteredReviews)
+    log(`Found ${filteredReviews.length} reviews`)
+
+    // post to Slack
+    log(`Posting ${filteredReviews.length} reviews`)
+    await slack.post(filteredReviews)
+
+    log('Successful')
   } finally {
     history.quit()
   }

@@ -18,7 +18,7 @@ I recommend to execute by crontab every morning.
 $ git clone https://github.com/pine/slack-playstore-reviews.git
 $ cd slack-playstore-reviews
 $ npm install
-$ SLACK_API_TOKEN=XXX bin/slack-playstore-reviews
+$ APP_ID=com.example.app SLACK_API_TOKEN=XXX bin/slack-playstore-reviews
 ```
 
 ## Options

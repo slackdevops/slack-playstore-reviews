@@ -40,7 +40,7 @@ You can set any options uses environment variables.
 - `REDIS_PREFIX` Redis key prefix
   - Default: `''`
 - `AFTER_AT` Initial start date to search for a review
-  - Default: `1970-01-01`
+  - Default: `'1970-01-01'`
 
 ## License
 Public Domain

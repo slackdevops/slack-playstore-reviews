@@ -15,8 +15,8 @@ const appId = process.env.APP_ID
 const token = process.env.SLACK_API_TOKEN
 const channel = process.env.SLACK_CHANNEL
 const botUser = {
-  username: process.env.SLACK_USERNAME,
-  icon_url: process.env.SLACK_ICON_URL,
+  username: process.env.SLACK_USERNAME || 'Google Play',
+  icon_url: process.env.SLACK_ICON_URL || '',
 }
 
 const port = process.env.REDIS_PORT || 6379

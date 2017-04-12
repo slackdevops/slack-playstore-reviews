@@ -27,6 +27,7 @@ You can set any options uses environment variables.
 
 - `APP_ID` Google Play Application ID **(required)**
 - `SLACK_API_TOKEN` Slack API token **(required)**
+- `SLACK_CHANNEL` Slack channel **(required)**
 - `SLACK_USERNAME` Slack username
   - Default: `'Google Play'`
 - `SLACK_ICON_URL` Slack icon URL
